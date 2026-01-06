@@ -7,6 +7,7 @@ pipeline {
     }
     environment {
       GIT_URL = "https://github.com/titas2003/api.myclinic.com.git"
+      DEPLOY_GIT = "https://github.com/titas2003/deploy.myclinic.com.git"
       GIT_BRANCH = "main"
       DOCKER_CRED = "titas2003"
     }
@@ -42,6 +43,20 @@ pipeline {
                         docker logout
                     '''
                 }
+            }
+        }
+
+        stage("Deploy Script") {
+            steps {
+                echo "Pulling deployment script..."
+                git branch: "${GIT_BRANCH}", credentialsId: "github_titas", url: "${DEPLOY_GIT}"
+                sh "ls -l"
+            }
+        }
+        stage("Deploy") {
+            steps {
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'kmaster', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '''kubectl apply -f api.myclinic.com.yaml
+kubectl apply -f svc.api.myclinic.com.yaml''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: './', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.yaml')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
             }
         }
     }
