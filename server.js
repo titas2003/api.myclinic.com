@@ -21,5 +21,5 @@ app.use("/api/appointments", appointmentRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () =>
-  console.log(`Clinic API is running on port ${PORT}`)
+  console.log(`Clinic API running on port ${PORT}`)
 );
