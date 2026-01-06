@@ -39,7 +39,9 @@ pipeline {
                     sh '''
                         echo ${DOCKER_PASS} | sudo docker login -u ${DOCKER_USER} --password-stdin
                         sudo docker tag myclinic:v1.${BUILD_NUMBER} ${DOCKER_USER}/myclinic:v1.${BUILD_NUMBER}
+                        sudo docker tag myclinic:v1.${BUILD_NUMBER} ${DOCKER_USER}/myclinic:latest
                         sudo docker push ${DOCKER_USER}/myclinic:v1.${BUILD_NUMBER}
+                        sudo docker push ${DOCKER_USER}/myclinic:latest
                         docker logout
                     '''
                 }
