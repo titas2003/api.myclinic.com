@@ -48,7 +48,7 @@ pipeline {
 
         stage("Deploy Script") {
             steps {
-                echo "Pulling deployment script..."
+                echo "Pulling deployment scripts..."
                 git branch: "${GIT_BRANCH}", credentialsId: "github_titas", url: "${DEPLOY_GIT}"
                 sh "ls -l"
             }
